@@ -1,378 +1,426 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>スキル習得チェックリスト2 - Modern Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<style>
-/* -----------------------------------
- * 1. 全体設定
- * ----------------------------------- */
-body {
-    margin: 0;
-    font-family: 'Noto Sans JP', sans-serif;
-    display: flex;
-    background: #f0f4f8;
-    color: #333;
-    min-height: 100vh;
-}
-
-/* -----------------------------------
- * 2. サイドメニュー
- * ----------------------------------- */
-nav {
-    width: 250px;
-    background: #1e3a8a;
-    color: #fff;
-    padding: 20px 0;
-    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-}
-nav h2 {
-    font-size: 20px;
-    font-weight: 700;
-    padding: 0 25px 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-    margin-bottom: 20px;
-}
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-nav ul li {
-    margin: 5px 0;
-}
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 25px;
-    transition: background 0.2s;
-}
-nav ul li a i { margin-right: 15px; font-size: 18px; }
-nav ul li a:hover { background: #3b82f6; }
-
-.nav-progress {
-    font-size: 12px;
-    font-weight: 700;
-    padding: 3px 6px;
-    border-radius: 4px;
-    background: rgba(255,255,255,0.2);
-    min-width: 50px;
-    text-align: center;
-}
-
-/* -----------------------------------
- * 3. メインコンテンツ
- * ----------------------------------- */
-main { flex: 1; padding: 40px; }
-h1 { font-size: 32px; font-weight: 700; color: #1e3a8a; margin-bottom: 30px; }
-section { margin-bottom: 50px; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-section h2 { font-size: 24px; color: #1e3a8a; border-left: 5px solid #3b82f6; padding-left: 15px; margin-bottom: 25px; }
-
-/* -----------------------------------
- * 4. スキルカード
- * ----------------------------------- */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-    gap: 25px;
-    margin-bottom: 30px;
-}
-.skill-card {
-    background: #f7f9fc;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border-left: 5px solid #93c5fd;
-}
-.skill-card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
-.skill-header { display: flex; align-items: center; margin-bottom: 15px; }
-.skill-header i { font-size: 24px; color: #1e3a8a; margin-right: 10px; }
-.skill-title { font-size: 18px; font-weight: 700; color: #1e3a8a; }
-.skill-content p { margin: 5px 0 10px 0; font-size: 14px; color: #555; }
-.skill-level-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; font-size: 14px; }
-.skill-level span { font-weight: 700; color: #3b82f6; }
-.detail-toggle-btn {
-    padding: 6px 12px; background: #3b82f6; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.2s;
-}
-.detail-toggle-btn:hover { background: #1e3a8a; }
-.skill-detail { margin-top: 15px; padding: 10px; background: #eef2ff; border-radius: 5px; font-size: 14px; display: none; }
-.skill-detail ul { list-style: disc; padding-left: 20px; margin: 0; }
-.skill-detail li { margin-bottom: 5px; }
-.progress-control { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ddd; }
-.progress-checkbox input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; vertical-align: middle; }
-.progress-checkbox label { font-weight: 700; color: #1e3a8a; font-size: 16px; vertical-align: middle; margin-left: 5px; }
-
-/* -----------------------------------
- * 5. ダッシュボードカード
- * ----------------------------------- */
-.dashboard-card { border: none; border-radius: 15px; color: white; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 25px; text-align: center; transition: transform 0.3s ease; overflow: hidden; position: relative; cursor: pointer; min-height: 180px; }
-.dashboard-card:hover { transform: translateY(-7px) scale(1.02); }
-.card-web { background: linear-gradient(135deg,#3b82f6,#1e3a8a); }
-.card-tools { background: linear-gradient(135deg,#10b981,#047857); }
-.card-programming { background: linear-gradient(135deg,#f59e0b,#b45309); }
-.card-sns { background: linear-gradient(135deg,#ef4444,#991b1b); }
-.dashboard-card i { font-size: 40px; margin-bottom: 10px; display: block; opacity: 0.8; }
-.dashboard-card .card-header { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
-.dashboard-card p { font-size: 14px; margin: 0; opacity: 0.9; }
-.dashboard-card button { margin-top: 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5); color: white; font-weight: 700; padding: 8px 15px; }
-.dashboard-card button:hover { background: rgba(255,255,255,0.4); }
-.dashboard-card .progress-display { margin-top: 10px; }
-.progress-bar { height: 8px; background-color: rgba(255,255,255,0.3); border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
-.progress-bar-fill { height: 100%; background-color: white; transition: width 0.5s ease-in-out; }
-.progress-text { font-size: 12px; font-weight: 700; text-align: right; color: rgba(255,255,255,0.9); }
-
-/* モーダル */
-.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.8); }
-.modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 600px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; animation: fadeIn 0.3s; }
-@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-.modal-content img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; background-color: #eee; }
-.modal-content h3 { color: #1e3a8a; font-size: 24px; margin-top: 0; }
-.modal-content ul { list-style: disc; padding-left: 20px; font-size: 16px; color: #555; }
-.modal-close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
-.modal-close:hover, .modal-close:focus { color: #333; text-decoration: none; cursor: pointer; }
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スキル進捗管理ダッシュボード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* フォント設定と基本スタイル */
+        body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: #f4f7f9; }
+        .skill-level-1 { background-color: #ffeaea; color: #cc0000; }
+        .skill-level-2 { background-color: #fffbe6; color: #cc8400; }
+        .skill-level-3 { background-color: #e6f7ff; color: #008cc0; }
+        .skill-level-4 { background-color: #e8f9e8; color: #1f9e2b; }
+        .skill-level-5 { background-color: #f0ebff; color: #7000cc; font-weight: bold; }
+        .skill-row:hover { background-color: #e9eff2; cursor: pointer; }
+    </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-<nav>
-    <h2><i class="fas fa-layer-group"></i> ジャンル</h2>
-    <ul>
-        <li><a href="#web" data-genre="web"><i class="fas fa-globe"></i> Web開発<span class="nav-progress" id="progress-web">0%</span></a></li>
-        <li><a href="#tools" data-genre="tools"><i class="fas fa-tools"></i> ツール / 分析<span class="nav-progress" id="progress-tools">0%</span></a></li>
-        <li><a href="#programming" data-genre="programming"><i class="fas fa-code"></i> プログラミング言語<span class="nav-progress" id="progress-programming">0%</span></a></li>
-        <li><a href="#sns" data-genre="sns"><i class="fas fa-share-alt"></i> SNS / マーケティング<span class="nav-progress" id="progress-sns">0%</span></a></li>
-    </ul>
-</nav>
+    <!-- Tailwind CSS設定 (日本語フォント追加) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <div id="app" class="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow-2xl">
+        <header class="mb-6 border-b pb-4">
+            <h1 class="text-3xl font-bold text-gray-800">スキル進捗管理ボード</h1>
+        </header>
 
-<main>
-    <h1>スキル習得チェックリスト</h1>
-
-    <section id="dashboard">
-        <h2>ダッシュボード</h2>
-        <div class="skills-grid">
-            <div class="dashboard-card card-web">
-                <i class="fas fa-globe"></i>
-                <div class="card-header">Web開発</div>
-                <p>HTML/CSS/JSなど</p>
-                <div class="progress-display">
-                    <div class="progress-bar"><div class="progress-bar-fill" id="dash-web"></div></div>
-                    <div class="progress-text" id="dash-web-text">0%</div>
-                </div>
+        <!-- ユーザー選択と現在の進捗表示 -->
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-indigo-50 rounded-lg shadow-inner">
+            <div class="mb-4 sm:mb-0">
+                <label for="user-select" class="block text-sm font-medium text-indigo-700 mb-1">進捗を編集するユーザー:</label>
+                <select id="user-select" onchange="changeUser(this.value)" class="w-full sm:w-48 p-2 border border-indigo-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out">
+                    <!-- Options will be populated by JS -->
+                </select>
             </div>
-            <div class="dashboard-card card-tools">
-                <i class="fas fa-tools"></i>
-                <div class="card-header">ツール</div>
-                <p>Photoshop, Excelなど</p>
-                <div class="progress-display">
-                    <div class="progress-bar"><div class="progress-bar-fill" id="dash-tools"></div></div>
-                    <div class="progress-text" id="dash-tools-text">0%</div>
-                </div>
-            </div>
-            <div class="dashboard-card card-programming">
-                <i class="fas fa-code"></i>
-                <div class="card-header">プログラミング</div>
-                <p>Python, Javaなど</p>
-                <div class="progress-display">
-                    <div class="progress-bar"><div class="progress-bar-fill" id="dash-programming"></div></div>
-                    <div class="progress-text" id="dash-programming-text">0%</div>
-                </div>
-            </div>
-            <div class="dashboard-card card-sns">
-                <i class="fas fa-share-alt"></i>
-                <div class="card-header">SNS</div>
-                <p>マーケティングなど</p>
-                <div class="progress-display">
-                    <div class="progress-bar"><div class="progress-bar-fill" id="dash-sns"></div></div>
-                    <div class="progress-text" id="dash-sns-text">0%</div>
-                </div>
+            <div id="current-user-info" class="text-lg font-semibold text-indigo-800">
+                現在のユーザー: <span id="current-user-name" class="font-extrabold text-indigo-900">選択してください</span>
             </div>
         </div>
-    </section>
 
-    <!-- スキル一覧サンプル -->
-    <section id="web">
-        <h2>Web開発</h2>
-        <div class="skills-grid">
-            <div class="skill-card" data-genre="web" data-skill="html">
-                <div class="skill-header"><i class="fab fa-html5"></i><span class="skill-title">HTML</span></div>
-                <div class="skill-content"><p>Webページの構造を作る</p></div>
-                <div class="skill-detail">
-                    <ul>
-                        <li>タグの基本</li>
-                        <li>フォームやテーブル</li>
-                    </ul>
-                </div>
-                <div class="progress-control">
-                    <div class="progress-checkbox">
-                        <input type="checkbox" id="html-checkbox">
-                        <label for="html-checkbox">習得済み</label>
-                    </div>
-                    <button class="detail-toggle-btn">詳細</button>
-                </div>
-            </div>
-            <div class="skill-card" data-genre="web" data-skill="css">
-                <div class="skill-header"><i class="fab fa-css3-alt"></i><span class="skill-title">CSS</span></div>
-                <div class="skill-content"><p>デザインとレイアウトを整える</p></div>
-                <div class="skill-detail">
-                    <ul>
-                        <li>Flexbox, Grid</li>
-                        <li>アニメーション</li>
-                    </ul>
-                </div>
-                <div class="progress-control">
-                    <div class="progress-checkbox">
-                        <input type="checkbox" id="css-checkbox">
-                        <label for="css-checkbox">習得済み</label>
-                    </div>
-                    <button class="detail-toggle-btn">詳細</button>
-                </div>
-            </div>
+        <!-- スキルマトリクステーブル -->
+        <div class="overflow-x-auto shadow-lg rounded-xl border border-gray-100">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-indigo-600 sticky top-0">
+                    <tr>
+                        <th class="px-3 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-1/5">ジャンル</th>
+                        <th class="px-3 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-2/5">スキル</th>
+                        <th class="px-3 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-1/5">達成レベル (1-5)</th>
+                        <th class="px-3 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-1/5">進捗率 (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="skill-table-body" class="bg-white divide-y divide-gray-200">
+                    <!-- Skill rows will be populated here -->
+                </tbody>
+            </table>
         </div>
-    </section>
 
-    <!-- モーダルサンプル -->
-    <div id="sampleModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <h3>モーダルタイトル</h3>
-            <img src="https://via.placeholder.com/500x300" alt="イメージ">
-            <ul>
-                <li>詳細情報1</li>
-                <li>詳細情報2</li>
-            </ul>
+        <p class="text-sm text-gray-500 mt-4">*行をクリックすると進捗を更新できます。</p>
+
+        <!-- メッセージ/通知エリア -->
+        <div id="message-area" class="mt-6 text-center p-3 rounded-lg hidden"></div>
+    </div>
+
+    <!-- 進捗更新モーダル -->
+    <div id="progress-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center p-4 transition-opacity duration-300" onclick="closeModal(event)">
+        <div class="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95" onclick="event.stopPropagation()">
+            <h2 class="text-xl font-bold mb-4 border-b pb-2 text-indigo-700">進捗更新: <span id="modal-skill-name"></span></h2>
+            
+            <form id="progress-form" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="modal-category">
+                <input type="hidden" id="modal-skill">
+
+                <div class="mb-4">
+                    <label for="level-select" class="block text-sm font-medium text-gray-700">達成レベル (1-5)</label>
+                    <select id="level-select" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="1">1: 未着手</option>
+                        <option value="2">2: 基礎理解</option>
+                        <option value="3">3: 補助あり実践</option>
+                        <option value="4">4: 応用実践</option>
+                        <option value="5">5: 自走・実務レベル</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="progress-percent" class="block text-sm font-medium text-gray-700">進捗率 (%)</label>
+                    <input type="number" id="progress-percent" min="0" max="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
+                </div>
+
+                <div class="mb-6">
+                    <label for="comment-textarea" class="block text-sm font-medium text-gray-700">評価コメント</label>
+                    <textarea id="comment-textarea" rows="3" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                </div>
+
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition duration-150">キャンセル</button>
+                    <button type="submit" id="submit-button" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition duration-150 shadow-md">
+                        更新を登録
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-</main>
+    <script>
+        // -----------------------------------------------------------
+        // 1. データ定義
+        // -----------------------------------------------------------
 
-<script>
-// ==============================
-// 1. GAS URL設定
-// ==============================
-const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx8JuCda49tZYNn7r471Pd_GmI176TcvaBzmoKT-FMjuG7GyaL9leowOqDIP3LcjwFt/exec"; // ←ここにWebアプリのURL
+        // ユーザーリスト
+        const USERS = ['ユーザーA', 'ユーザーB', 'ユーザーC'];
 
-// ==============================
-// 2. 詳細表示切替
-// ==============================
-document.querySelectorAll('.detail-toggle-btn').forEach(btn => {
-    btn.addEventListener('click', (e)=>{
-        const detail = btn.closest('.skill-card').querySelector('.skill-detail');
-        detail.style.display = (detail.style.display === 'block') ? 'none' : 'block';
-        btn.textContent = (detail.style.display === 'block') ? '閉じる' : '詳細';
-    });
-});
+        // スキルマトリクスデータ (HTMLから抽出)
+        const SKILL_MATRIX = [
+            { category: 'Web基礎', skill: 'HTML', levels: ['Webの仕組み、タグの役割、ドキュメント構造（head/body）を理解する。', 'よく使うタグ（見出し、段落、リスト、リンク、画像）を理解し、簡単なページを作成する。', '表やフォームを組み込んだページのマークアップを行い、セマンティックなタグの使用を意識する。', '複数ページからなるWebサイト全体をHTMLで設計し、適切なWAI-ARIA属性を検討する。', 'SEOやアクセシビリティを考慮したマークアップ設計や、大規模サイトのテンプレート構造を設計する。'] },
+            { category: 'Web基礎', skill: 'CSS', levels: ['CSSの役割、セレクタの基本、色の指定など、スタイルの概念を理解する。', 'Boxモデルの概念を完全に理解し、margin、padding、borderを用いて要素の配置を制御する。', 'FlexboxやGridの基本的な使い方を習得し、レスポンシブデザインの初歩（メディアクエリ）を学ぶ。', '本格的なレイアウト（ヘッダー、サイドバー、メインコンテンツなど）をFlexbox/Gridで構築し、複雑なアニメーションやトランジションを実装する。', 'SCSSなどのプリプロセッサの使用、CSS設計手法（BEMなど）の理解、パフォーマンス最適化（描画速度）を考慮した記述ができる。'] },
+            { category: 'Web基礎', skill: 'Javascript', levels: ['JavaScriptの役割、変数の宣言、コンソールへの出力など、プログラミングの基本概念を理解する。', 'DOM操作の基本（要素の取得、内容の変更、イベントリスナー）を習得し、簡単な機能を実装する。', 'ボタンクリックやマウスオーバーなどのイベントを扱う機能を実装し、非同期処理（setTimeout）の初歩を学ぶ。', 'APIからデータを取得し、ページに動的に表示するWebアプリケーションを開発する。フォームの入力値検証なども実装する。', 'フレームワーク（React, Vueなど）を用いた開発、ユニットテストの作成、大規模アプリケーションの設計パターンを理解する。'] },
+            
+            { category: 'Google関連', skill: 'Google Spreadsheet', levels: ['スプレッドシートの画面構成、基本的なデータ入力、セルの書式設定を学ぶ。', '主要な基本関数（SUM, AVERAGE, VLOOKUP, IFなど）を使ってデータの集計・検索を行う。', '複雑なネスト関数や配列数式を組み合わせて、定型業務の集計を効率化する。', 'ピボットテーブル、グラフ機能を使い、データの傾向を分析・可視化するダッシュボードを作成する。', '外部データとの連携（IMPORTXMLなど）や、スクリプトと組み合わせて業務プロセス全体を自動化する。'] },
+            { category: 'Google関連', skill: 'Google Apps Script', levels: ['GASの役割、スクリプトエディタの起動、簡単なログ出力などを学ぶ。', 'スプレッドシートの値の取得・書き込み、カスタム関数の作成など、基本的な操作を習得する。', 'トリガー機能（時間ベース、フォーム送信など）を設定し、定型業務の自動実行を実装する。', 'GmailやDriveなどのGoogleサービスと連携し、承認ワークフローなどの簡易的な業務システムを構築する。', '外部APIとの連携、Web Appとしての公開、バージョン管理を考慮した開発、大規模なスクリプトの保守・運用ができる。'] },
+            { category: 'Google関連', skill: 'Google Analytics', levels: ['GAの役割、基本的なレポート（オーディエンス、集客、行動）の読み方を学ぶ。', 'コンバージョンやイベントの基本設定を理解し、基本的な目標設定ができる。', 'セグメントやフィルタを使ってデータを深掘りし、課題発見のための分析レポートを作成する。', 'カスタムディメンション/メトリクスの設定、eコマース計測、GTM（Google Tag Manager）を用いた高度なトラッキング設定ができる。', 'BigQuery連携、データポータルによるダッシュボード構築、統計的分析手法を用いた意思決定への活用ができる。'] },
 
-// ==============================
-// 3. チェックボックス変更
-// ==============================
-document.querySelectorAll('.progress-checkbox input[type="checkbox"]').forEach(cb=>{
-    cb.addEventListener('change', ()=>{
-        saveProgress();
-        updateProgressDisplay();
-    });
-});
+            { category: '開発環境/ツール', skill: 'Git/GitHub', levels: ['バージョン管理の概念、Gitの役割、GitHubの基本的な画面構成を学ぶ。', 'clone, add, commit, push, pullなど、基本的なコマンドを習得し、個人でリポジトリを運用する。', 'branchを作成し、プルリクエスト（PR）を用いたマージの流れを理解する。コンフリクトの解決を体験する。', 'チームでの開発フロー（ブランチ戦略、コードレビュー）に沿ってGitを運用し、rebase, cherry-pickなどの応用操作も使う。', 'CI/CD（継続的インテグレーション/デプロイ）の導入、Git Flowなどのブランチ戦略の設計、リポジトリのセキュリティ管理ができる。'] },
+            { category: '開発環境/ツール', skill: 'PHP', levels: ['PHPの役割、Webサーバーとの関係、基本的な構文（変数、条件分岐）を学ぶ。', 'フォームのデータを受け取る処理、データベースへの接続と簡単な操作（CRUDのR）を学ぶ。', '外部ライブラリの利用、セキュリティ（SQLインジェクション対策など）を意識したコードを書く。', 'フレームワーク（Laravel, Symfonyなど）を用いたWebアプリケーションの開発、REST APIの設計・実装ができる。', 'オブジェクト指向設計の適用、ユニットテストの導入、パフォーマンスチューニングができる。'] },
+            { category: '開発環境/ツール', skill: 'Python', levels: ['Pythonの役割、開発環境の準備、基本的なデータ型、制御構造を学ぶ。', 'ファイル操作（読み書き）、リストや辞書を使ったデータ処理、関数の定義を習得する。', 'Webスクレイピング（BeautifulSoup, requests）やデータ分析（pandas）など、ライブラリを使った小規模なツールを作成する。', 'Webフレームワーク（Flask, Django）を用いたAPIやWebアプリの開発、または機械学習ライブラリ（scikit-learn）を用いたデータ分析プロジェクトを推進する。', 'パッケージングと公開、非同期処理（asyncio）の活用、設計パターンを考慮した大規模システムの開発ができる。'] },
+            { category: '開発環境/ツール', skill: 'Excel VBA', levels: ['VBAの役割、マクロの記録、VBE（Visual Basic Editor）の画面構成を学ぶ。', 'セルやシートへのアクセス方法、If文、Forループなどの制御構造を習得する。', '複数のシート/ブックを操作するマクロ、ユーザーフォームを用いた簡単なGUIを作成する。', '外部ファイルとの連携、ADOを用いたデータベース操作、エラーハンドリングを組み込んだ実用的な業務自動化ツールを開発する。', 'オブジェクト指向の要素を取り入れた設計、アドインとしての配布、API連携による高度なデータ取得・加工ができる。'] },
+            
+            { category: 'SNS・マーケティング', skill: 'LINEミニアプリ', levels: ['LINEミニアプリの役割、Messaging APIの概念、開発者登録の流れを学ぶ。', 'LIFF（LINE Front-end Framework）の基本、テンプレートを利用した簡単なアプリを作成する。', 'ユーザー認証やカメラ機能など、LINE独自の機能を組み込んだアプリを開発する。', '予約システムやポイントカードなど、業務と連携した実用的なミニアプリを設計・開発・リリースする。', '大規模ユーザーへの対応、プッシュ通知の最適化、データ分析に基づく機能改善サイクルを主導する。'] },
+            { category: 'SNS・マーケティング', skill: 'Lステップ', levels: ['Lステップの役割、ステップ配信の概念、基本的な管理画面の操作を学ぶ。', '友だち追加時のシナリオ設定、セグメント配信の基本的な設定ができる。', '顧客の行動（クリック、回答）に応じた条件分岐を含む、複雑なステップ配信フローを構築する。', 'KPIに基づいた配信効果の分析、A/Bテストによる最適化、外部ツール（CRMなど）との連携を行う。', 'リードナーチャリングからセールスまでを自動化する戦略的な配信シナリオ全体を設計し、運用を統括する。'] },
+            { category: 'SNS・マーケティング', skill: 'SNS関連全般', levels: ['各SNSの利用者層、プラットフォームの特徴、基本的な機能（投稿、いいね）を理解する。', '企業の公式アカウント作成、基本的な投稿の計画と実行ができる。', 'ハッシュタグ戦略の考案、エンゲージメントを高めるコンテンツ（アンケート、Q&Aなど）を作成する。', 'SNS広告の運用、インサイト機能を用いた効果測定、炎上対策を含むリスク管理ができる。', '統合的なSNSマーケティング戦略を立案し、KPI達成に向けたPDCAサイクルを回し、ブランドイメージをコントロールする。'] },
+            { category: 'SNS・マーケティング', skill: 'Instagram', levels: ['Instagramの機能（フィード、ストーリー、リール）と、視覚的なコンテンツの重要性を理解する。', '魅力的な画像/動画の作成、キャプションの書き方など、コンテンツ制作の基本を習得する。', 'UGC（ユーザー生成コンテンツ）の活用、インフルエンサーとの連携など、フォロワー増加施策を試行する。', '広告ターゲティングの設計、EC連携（ショッピングタグ）の最適化、リーチとエンゲージメントの分析を行う。', 'クリエイティブディレクションとデータ分析に基づき、アカウントを収益化まで結びつける戦略を主導する。'] },
+            { category: 'SNS・マーケティング', skill: 'X（旧Twitter）', levels: ['Xの機能（ポスト、リポスト、トレンド）と、リアルタイム性の重要性を理解する。', '話題性のあるポストの作成、ユーザーとのコミュニケーションの基本を習得する。', 'キャンペーン（リポスト企画など）の企画・実行、トレンドワードを絡めたポストを試行する。', 'トレンド分析に基づいたコンテンツ戦略の策定、危機管理（ネガティブなポストへの対応）を実践する。', '即時性と拡散性を活かしたプロモーション設計、メディアとしての活用戦略を立案し、実行する。'] },
+            { category: 'SNS・マーケティング', skill: 'YouTube', levels: ['YouTubeの役割、チャンネル運営の基本、SEO（検索エンジン最適化）の初歩を学ぶ。', '企画・撮影・編集の基本プロセス、サムネイルやタイトルの最適化を習得する。', 'アナリティクスを用いた視聴維持率の改善、コミュニティ機能の活用など、チャンネル成長施策を試行する。', '広告収益の最大化、コラボレーション戦略、シリーズ化による継続的なコンテンツ制作サイクルを確立する。', '大規模チャンネルの運営戦略、MCN（マルチチャンネルネットワーク）との連携、ブランド広告とのタイアップ戦略を主導する。'] },
+            { category: 'SNS・マーケティング', skill: 'TikTok', levels: ['TikTokの役割、短尺動画のトレンド、アルゴリズムの特性を理解する。', '動画の企画、撮影、アプリ内編集（BGM、エフェクト）の基本を習得する。', 'デュエットやチャレンジなど、プラットフォーム特有の機能を使ったバイラル性の高い動画を制作する。', '広告運用（インフィード広告など）の最適化、インサイトを用いたコンテンツ改善、ライブ配信の活用を行う。', 'ブランド認知を目的としたショート動画戦略全体を設計し、トレンドの予測と迅速なコンテンツ制作を指揮する。'] }
+        ];
+        
+        // ユーザーごとの進捗データ (GASからの取得をシミュレート)
+        let userProgress = {}; // { 'ユーザーA': { 'HTML': { level: 3, percent: 50, comment: '基礎的なマークアップは可能', updated: '2025/09/26 10:00' }, ... } }
+        let currentUser = null;
 
-// ==============================
-// 4. 保存 / 取得
-// ==============================
-function getCurrentProgress() {
-    let data = {};
-    document.querySelectorAll('.skill-card').forEach(card=>{
-        const genre = card.dataset.genre;
-        const skill = card.dataset.skill;
-        const checked = card.querySelector('input[type="checkbox"]').checked;
-        if(!data[genre]) data[genre] = {};
-        data[genre][skill] = checked;
-    });
-    return data;
-}
+        // -----------------------------------------------------------
+        // 2. DOM操作とイベントハンドラ
+        // -----------------------------------------------------------
 
-function saveProgress() {
-    const progress = getCurrentProgress();
-    // GAS送信
-    fetch(GAS_WEB_APP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action:'save', data:progress })
-    })
-    .then(res=>res.json())
-    .then(r=>console.log("Saved:", r))
-    .catch(err=>console.error("Save Error:", err));
-}
-
-function loadProgress() {
-    // GASからデータ取得
-    fetch(GAS_WEB_APP_URL+"?action=load")
-    .then(res=>res.json())
-    .then(res=>{
-        const progress = res.data || {};
-        document.querySelectorAll('.skill-card').forEach(card=>{
-            const genre = card.dataset.genre;
-            const skill = card.dataset.skill;
-            const checked = progress[genre] && progress[genre][skill] ? true : false;
-            card.querySelector('input[type="checkbox"]').checked = checked;
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeUserSelect();
+            // 初期状態では進捗データを空でテーブルをレンダリング
+            renderSkillTable();
         });
-        updateProgressDisplay();
-    })
-    .catch(err=>console.error(err));
-}
 
-// ==============================
-// 5. 進捗計算・表示
-// ==============================
-function calculateGenreProgress(genre) {
-    const cards = document.querySelectorAll(`.skill-card[data-genre="${genre}"]`);
-    if(cards.length===0) return 0;
-    let count = 0;
-    cards.forEach(c=>{
-        if(c.querySelector('input[type="checkbox"]').checked) count++;
-    });
-    return Math.round((count/cards.length)*100);
-}
+        function initializeUserSelect() {
+            const selectEl = document.getElementById('user-select');
+            USERS.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user;
+                option.textContent = user;
+                selectEl.appendChild(option);
+            });
+            // 最初のユーザーを選択
+            selectEl.selectedIndex = 0;
+            changeUser(selectEl.value);
+        }
 
-function updateProgressDisplay() {
-    const genres = ['web','tools','programming','sns'];
-    genres.forEach(g=>{
-        const val = calculateGenreProgress(g);
-        // サイドバー
-        const navEl = document.getElementById(`progress-${g}`);
-        if(navEl) navEl.textContent = val + "%";
-        // ダッシュボード
-        const dashEl = document.getElementById(`dash-${g}`);
-        if(dashEl) dashEl.style.width = val + "%";
-        const dashText = document.getElementById(`dash-${g}-text`);
-        if(dashText) dashText.textContent = val + "%";
-    });
-}
+        /**
+         * ユーザーが変更されたときに呼び出されます。
+         * 実際にはGASの関数を呼び出して進捗データを取得します。
+         * @param {string} userName 
+         */
+        function changeUser(userName) {
+            currentUser = userName;
+            document.getElementById('current-user-name').textContent = userName;
+            showMessage(`ユーザー ${userName} の進捗データを取得中...`, 'bg-yellow-100 text-yellow-800');
 
-// ==============================
-// 6. モーダル
-// ==============================
-document.querySelectorAll('.modal-close').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-        btn.closest('.modal').style.display='none';
-    });
-});
-window.onclick = function(event){
-    document.querySelectorAll('.modal').forEach(modal=>{
-        if(event.target==modal) modal.style.display='none';
-    });
-}
+            // --- GAS連携ポイント ---
+            // 実際は google.script.run.withSuccessHandler(loadProgressSuccess).withFailureHandler(handleFailure).loadProgress(userName);
+            // としますが、今回はモック関数を呼び出します。
+            
+            // モックデータのロード
+            setTimeout(() => {
+                loadProgressSuccess(mockLoadProgress(userName));
+            }, 500);
 
-// ==============================
-// 7. 初期読み込み
-// ==============================
-document.addEventListener('DOMContentLoaded', ()=>{
-    loadProgress();
-});
-</script>
+            // ---------------------
+        }
 
+        /**
+         * 進捗データ取得成功時のコールバック関数
+         * @param {object} progressData - GASから返された進捗データ
+         */
+        function loadProgressSuccess(progressData) {
+            userProgress[currentUser] = {};
+            // GASから返される配列データをオブジェクト形式に変換して保存
+            progressData.forEach(row => {
+                // スプレッドシートの列順: メンバー名, スキル, 達成レベル, 進捗率 (%), 評価コメント, 更新日時
+                if (row[1]) { // スキル名が存在することを確認
+                    userProgress[currentUser][row[1]] = {
+                        level: parseInt(row[2]) || 1,
+                        percent: parseInt(row[3]) || 0,
+                        comment: row[4] || '',
+                        updated: row[5] || '---'
+                    };
+                }
+            });
+            renderSkillTable();
+            showMessage(`${currentUser} の進捗データを更新しました。`, 'bg-green-100 text-green-800');
+        }
+
+        /**
+         * テーブルを描画/更新する
+         */
+        function renderSkillTable() {
+            const tbody = document.getElementById('skill-table-body');
+            tbody.innerHTML = '';
+            let currentCategory = '';
+
+            SKILL_MATRIX.forEach((item) => {
+                const progress = userProgress[currentUser] ? userProgress[currentUser][item.skill] : null;
+                const level = progress ? progress.level : 1;
+                const percent = progress ? progress.percent : 0;
+                const levelDescription = item.levels[level - 1];
+                const levelClass = `skill-level-${level}`;
+
+                let row = document.createElement('tr');
+                row.className = 'skill-row transition duration-150 ease-in-out';
+                row.setAttribute('data-category', item.category);
+                row.setAttribute('data-skill', item.skill);
+                row.setAttribute('onclick', `openModal('${item.category}', '${item.skill}', ${level}, ${percent}, '${(progress ? progress.comment : '')}')`);
+
+                // ジャンル (カテゴリが変わるときだけ表示)
+                let categoryCell;
+                if (item.category !== currentCategory) {
+                    const categoryRows = SKILL_MATRIX.filter(s => s.category === item.category).length;
+                    categoryCell = `<td rowspan="${categoryRows}" class="px-3 py-3 whitespace-nowrap align-top text-sm font-semibold text-gray-900 bg-gray-50 border-r border-gray-200">${item.category}</td>`;
+                    currentCategory = item.category;
+                } else {
+                    categoryCell = '';
+                }
+
+                row.innerHTML = `
+                    ${categoryCell}
+                    <td class="px-3 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ${item.skill}
+                        <div class="text-xs text-gray-500 mt-0.5" title="レベル${level}定義">${levelDescription}</div>
+                    </td>
+                    <td class="px-3 py-3 whitespace-nowrap text-center text-sm">
+                        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold ${levelClass} shadow-sm">
+                            ${level}
+                        </span>
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="h-2.5 rounded-full" style="width: ${percent}%; background-color: ${percent > 0 ? '#4f46e5' : '#d1d5db'}"></div>
+                        </div>
+                        <span class="text-xs font-semibold text-gray-600 mt-1 block">${percent}%</span>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        /**
+         * モーダルを開き、選択されたスキルの情報を設定します。
+         */
+        function openModal(category, skill, currentLevel, currentPercent, currentComment) {
+            if (!currentUser) {
+                showMessage('最初にユーザーを選択してください。', 'bg-red-100 text-red-800');
+                return;
+            }
+
+            document.getElementById('modal-skill-name').textContent = skill;
+            document.getElementById('modal-category').value = category;
+            document.getElementById('modal-skill').value = skill;
+            document.getElementById('level-select').value = currentLevel;
+            document.getElementById('progress-percent').value = currentPercent;
+            document.getElementById('comment-textarea').value = currentComment;
+            
+            document.getElementById('progress-modal').classList.remove('hidden');
+            document.getElementById('progress-modal').classList.add('flex');
+        }
+
+        /**
+         * モーダルを閉じます
+         */
+        function closeModal(event) {
+            if (event && event.target.id !== 'progress-modal') return; // 背景クリック以外は無視
+            document.getElementById('progress-modal').classList.add('hidden');
+            document.getElementById('progress-modal').classList.remove('flex');
+        }
+
+        /**
+         * フォーム送信を処理します。
+         */
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const level = document.getElementById('level-select').value;
+            const percent = document.getElementById('progress-percent').value;
+            const comment = document.getElementById('comment-textarea').value;
+            const skill = document.getElementById('modal-skill').value;
+            const category = document.getElementById('modal-category').value;
+            
+            const progressData = {
+                memberName: currentUser,
+                category: category,
+                skill: skill,
+                level: level,
+                percent: percent,
+                comment: comment
+            };
+            
+            document.getElementById('submit-button').textContent = '送信中...';
+            document.getElementById('submit-button').disabled = true;
+
+            // --- GAS連携ポイント ---
+            // 実際は google.script.run.withSuccessHandler(updateProgressSuccess).withFailureHandler(handleFailure).updateProgress(progressData);
+            // としますが、今回はモック関数を呼び出します。
+
+            // モックデータの更新
+            setTimeout(() => {
+                mockUpdateProgress(progressData);
+                updateProgressSuccess('更新が完了しました！');
+            }, 1000);
+
+            // ---------------------
+        }
+
+        /**
+         * 進捗更新成功時のコールバック関数
+         * @param {string} response - GASからの成功メッセージ
+         */
+        function updateProgressSuccess(response) {
+            document.getElementById('submit-button').textContent = '更新を登録';
+            document.getElementById('submit-button').disabled = false;
+            closeModal();
+            showMessage(response, 'bg-green-100 text-green-800');
+            // データ更新のため、再度進捗データをロードする (GAS連携の場合はloadProgressを呼び出す)
+            changeUser(currentUser); 
+        }
+
+        /**
+         * GAS実行失敗時の共通ハンドラ
+         * @param {Error} error - GAS実行で発生したエラー
+         */
+        function handleFailure(error) {
+            document.getElementById('submit-button').textContent = '更新を登録';
+            document.getElementById('submit-button').disabled = false;
+            closeModal();
+            showMessage(`エラーが発生しました: ${error.message}`, 'bg-red-100 text-red-800');
+            console.error("GAS Execution Failed:", error);
+        }
+
+        /**
+         * ユーザー向けにメッセージを表示する
+         * @param {string} msg 
+         * @param {string} className - Tailwind CSSクラス (e.g., 'bg-green-100 text-green-800')
+         */
+        function showMessage(msg, className) {
+            const area = document.getElementById('message-area');
+            area.textContent = msg;
+            area.className = `mt-6 text-center p-3 rounded-lg ${className}`;
+            area.classList.remove('hidden');
+            setTimeout(() => {
+                area.classList.add('hidden');
+            }, 5000);
+        }
+
+        // -----------------------------------------------------------
+        // 3. モック関数 (GASが設定されていない場合の動作確認用)
+        // -----------------------------------------------------------
+
+        // モック進捗データ (初回のシード)
+        const MOCK_DATA = {
+            'ユーザーA': [
+                ['ユーザーA', 'HTML', 4, 80, '応用的なWebサイト構成が可能になった。', '2025/09/25 12:00'],
+                ['ユーザーA', 'CSS', 3, 65, 'Flexbox/Gridの習得に集中している。', '2025/09/25 14:30'],
+            ],
+            'ユーザーB': [
+                ['ユーザーB', 'Google Spreadsheet', 5, 95, 'GASとの連携を含むダッシュボードを自走可能。', '2025/09/24 10:00'],
+                ['ユーザーB', 'Git/GitHub', 2, 40, 'clone, commitはできるがPR運用はまだ。', '2025/09/24 11:00'],
+            ],
+            'ユーザーC': []
+        };
+
+        function mockLoadProgress(userName) {
+            // スプレッドシートの全行から対象ユーザーの進捗だけをフィルタリングした配列を返すイメージ
+            return MOCK_DATA[userName] || [];
+        }
+
+        function mockUpdateProgress(data) {
+            const { memberName, skill, level, percent, comment } = data;
+            const updatedTime = new Date().toLocaleString('ja-JP', {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'});
+            
+            // モックデータの更新ロジック (簡易的なもの)
+            let currentList = MOCK_DATA[memberName] || [];
+            let found = false;
+            
+            for (let i = 0; i < currentList.length; i++) {
+                if (currentList[i][1] === skill) { // スキル名で検索
+                    currentList[i] = [memberName, skill, parseInt(level), parseInt(percent), comment, updatedTime];
+                    found = true;
+                    break;
+                }
+            }
+            
+            if (!found) {
+                currentList.push([memberName, skill, parseInt(level), parseInt(percent), comment, updatedTime]);
+            }
+            
+            MOCK_DATA[memberName] = currentList;
+            console.log(`[MOCK] ${memberName} - ${skill} の進捗を更新:`, MOCK_DATA[memberName].find(row => row[1] === skill));
+        }
+
+    </script>
 </body>
 </html>
