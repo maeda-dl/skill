@@ -958,7 +958,6 @@ function saveProgress() {
 
     localStorage.setItem('skillProgress', JSON.stringify(progress));
 
-    // GASに送信
     fetch(GAS_WEB_APP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -970,6 +969,7 @@ function saveProgress() {
 
     updateProgressDisplay();
 }
+
 
 
         /**
